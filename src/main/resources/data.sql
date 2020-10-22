@@ -1,0 +1,2 @@
+insert into message(id, topic, created, message) values (1, 'topic', '2020-10-22T10:00:00.000', 'message');
+insert into message(id, topic, created, message) values (2, 'lunda_stocks', '2020-10-22T11:00:00.000', 'message2');
