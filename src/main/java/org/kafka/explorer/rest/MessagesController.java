@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "api")
 public class MessagesController {
@@ -25,7 +23,7 @@ public class MessagesController {
     @GetMapping(value = "/messages", params = {"page", "size", "topic"}, produces = "application/json")
     public Page<Message> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size, @RequestParam("topic") String topic) {
 
-        final Page<Message> resultPage = messagesRepo.findAllByTopic(topic, PageRequest.of(page, size));
+        final Page<Message> resultPage = messagesRepo.findAllByTopicOrderByCreatedDesc(topic, PageRequest.of(page, size));
 
         /*if (page > resultPage.getTotalPages()) {
             throw new RuntimeException("Not found");

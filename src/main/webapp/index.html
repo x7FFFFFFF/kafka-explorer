@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app">
 <head>
+    <meta charset="utf-8"/>
     <link rel="stylesheet"
           href="//cdn.rawgit.com/angular-ui/bower-ui-grid/master/ui-grid.min.css">
     <script
@@ -11,6 +12,7 @@
 </head>
 <body>
 <div ng-controller="StudentCtrl as vm">
+     <h3>Топик: {{vm.getTopic()}}. Чтобы сменить топик, перегрузите страницу добавив к url '#название_топика'</h3>
     <div ui-grid="gridOptions" class="grid" ui-grid-pagination></div>
 </div>
 </body>

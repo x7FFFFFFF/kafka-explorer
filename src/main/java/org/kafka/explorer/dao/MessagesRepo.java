@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface MessagesRepo extends JpaRepository<Message, Long> {
 
-    Page<Message> findAllByTopic(String topic, Pageable page);
+    Page<Message> findAllByTopicOrderByCreatedDesc(String topic, Pageable page);
 }

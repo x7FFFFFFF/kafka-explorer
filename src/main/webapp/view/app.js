@@ -6,6 +6,7 @@ app.controller('StudentCtrl', ['$scope', 'RestService', function ($scope, RestSe
         pageSize: 5,
         sort: null
     };
+    this.getTopic = getTopic;
 
     RestService.getMessages(paginationOptions.pageNumber,
         paginationOptions.pageSize).success(function (data) {
