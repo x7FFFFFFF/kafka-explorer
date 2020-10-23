@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(indexes = {@Index(name = "IDX_TOPIC", columnList = "topic"),
         @Index(name = "IDX_TIMESTAMP", columnList = "created"),
-        @Index(name = "IDX_MESSAGE", columnList = "message")
+       /* @Index(name = "IDX_MESSAGE", columnList = "message")*/
 })
 @SequenceGenerator(name = "seq", initialValue = 100)
 public class Message implements Serializable {
@@ -20,6 +20,7 @@ public class Message implements Serializable {
     @Column(nullable = false)
     private LocalDateTime created;
     @Column(nullable = false)
+    @Lob
     private String message;
 
 
