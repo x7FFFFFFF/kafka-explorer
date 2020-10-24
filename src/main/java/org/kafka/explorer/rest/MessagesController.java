@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -32,9 +31,9 @@ public class MessagesController {
 
         final Page<Message> resultPage = messagesRepo.findAllByTopicOrderByCreatedDesc(topic, PageRequest.of(page, size));
 
-        /*if (page > resultPage.getTotalPages()) {
+        if (page > resultPage.getTotalPages()) {
             throw new RuntimeException("Not found");
-        }*/
+        }
         return resultPage;
     }
 

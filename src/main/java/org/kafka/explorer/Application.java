@@ -15,7 +15,7 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@Import({/*PersistenceConfig.class,*/ KafkaConfig.class})
+@Import({KafkaConfig.class})
 @PropertySource("classpath:application.properties")
 @EnableConfigurationProperties({DataSourceProperties.class})
 //@EnableScheduling

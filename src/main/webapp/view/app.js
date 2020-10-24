@@ -1,26 +1,8 @@
 var app = angular.module('app', ['ui.grid', 'ui.grid.pagination', 'ui.bootstrap', 'ngSanitize']);
 
 function RowEditCtrl($scope, $modalInstance, PersonSchema, row) {
-
-
-    //vm.schema = PersonSchema;
     $scope.entity = angular.copy(row.entity);
-    $scope.entity.message =  $scope.entity.message.replace(/\n/g, "<br />")
-   /* vm.form = [
-        'name',
-        'company',
-        'phone',
-        {
-            'key': 'address.city',
-            'title': 'City'
-        },
-    ];*/
-
- /*   vm.save = function save() {
-        // Copy row values over
-        row.entity = angular.extend(row.entity, vm.entity);
-        $modalInstance.close(row.entity);
-    }*/
+    $scope.entity.message =  $scope.entity.message.replace(/\n/g, "<br />");
 }
 
 app.controller('MsgCtrl', ['$scope', '$modal', 'RestService', function ($scope, $modal, RestService) {
@@ -29,12 +11,10 @@ app.controller('MsgCtrl', ['$scope', '$modal', 'RestService', function ($scope, 
         pageSize: 5,
         sort: null
     };
-    //var vm = this;
     $scope.editRow = function editRow(grid, row) {
         $modal.open({
             templateUrl: 'edit-modal.html',
             controller: ['$scope', '$modalInstance', 'grid', 'row', RowEditCtrl],
-            //controllerAs: 'vm',
             resolve: {
                 grid: function () {
                     return grid;
@@ -62,23 +42,19 @@ app.controller('MsgCtrl', ['$scope', '$modal', 'RestService', function ($scope, 
     }
     $scope.reloadMessages();
 
-    /*  RestService.getMessages($scope.topic, paginationOptions.pageNumber,
-          paginationOptions.pageSize).success(function (data) {
-          $scope.gridOptions.data = data.content;
-          $scope.gridOptions.totalItems = data.totalElements;
-      });*/
-
     $scope.gridOptions = {
         paginationPageSizes: [5, 10, 20],
         paginationPageSize: $scope.paginationOptions.pageSize,
         enableColumnMenus: false,
         useExternalPagination: true,
+        rowHeight:40,
         columnDefs: [
-            {field: 'button', name: '', cellTemplate: 'edit-button.html', width: 64},
-            {name: 'id'},
-            {name: 'topic'},
-            {name: 'created'},
+            {name: 'partition', width: 30},
+            {name: 'topic', width: 150},
+            {name: 'created', width: 210},
+            {name: 'key',  width: 70},
             {name: 'message'},
+            {field: 'button', name: '', cellTemplate: 'edit-button.html', width: 65}
         ],
         onRegisterApi: function (gridApi) {
             $scope.gridApi = gridApi;
@@ -86,10 +62,6 @@ app.controller('MsgCtrl', ['$scope', '$modal', 'RestService', function ($scope, 
                 $scope.paginationOptions.pageNumber = newPage;
                 $scope.paginationOptions.pageSize = pageSize;
                 $scope.reloadMessages();
-                /* RestService.getMessages($scope.topic, newPage, pageSize).success(function (data) {
-                     $scope.gridOptions.data = data.content;
-                     $scope.gridOptions.totalItems = data.totalElements;
-                 });*/
             });
         }
     };

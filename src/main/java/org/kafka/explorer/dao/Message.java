@@ -1,8 +1,5 @@
 package org.kafka.explorer.dao;
 
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.handler.annotation.Header;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
