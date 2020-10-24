@@ -2,12 +2,38 @@
 <html lang="en" ng-app="app">
 <head>
     <meta charset="utf-8"/>
+    <style>
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td,
+        th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        body {
+            background-color: lightblue;
+        }
+
+        active {
+            background-color: orange;
+        }
+    </style>
     <link rel="stylesheet"
           href="//cdn.rawgit.com/angular-ui/bower-ui-grid/master/ui-grid.min.css">
     <script
             src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
     <script
             src="//cdn.rawgit.com/angular-ui/bower-ui-grid/master/ui-grid.min.js"></script>
+    <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
     <script src="view/app.js"></script>
 </head>
 <body>

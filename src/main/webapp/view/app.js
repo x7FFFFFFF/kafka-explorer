@@ -1,11 +1,49 @@
-var app = angular.module('app', ['ui.grid', 'ui.grid.pagination']);
+var app = angular.module('app', ['ui.grid', 'ui.grid.pagination', 'ui.bootstrap']);
 
-app.controller('MsgCtrl', ['$scope', 'RestService', function ($scope, RestService) {
+function RowEditCtrl($scope, $modalInstance, PersonSchema, row) {
+
+
+    //vm.schema = PersonSchema;
+    $scope.entity = angular.copy(row.entity);
+   /* vm.form = [
+        'name',
+        'company',
+        'phone',
+        {
+            'key': 'address.city',
+            'title': 'City'
+        },
+    ];*/
+
+ /*   vm.save = function save() {
+        // Copy row values over
+        row.entity = angular.extend(row.entity, vm.entity);
+        $modalInstance.close(row.entity);
+    }*/
+}
+
+app.controller('MsgCtrl', ['$scope', '$modal', 'RestService', function ($scope, $modal, RestService) {
     $scope.paginationOptions = {
         pageNumber: 1,
         pageSize: 5,
         sort: null
     };
+    var vm = this;
+    vm.editRow = function editRow(grid, row) {
+        $modal.open({
+            templateUrl: 'edit-modal.html',
+            controller: ['$scope', '$modalInstance', 'grid', 'row', RowEditCtrl],
+            controllerAs: 'vm',
+            resolve: {
+                grid: function () {
+                    return grid;
+                },
+                row: function () {
+                    return row;
+                }
+            }
+        });
+    }
 
     $scope.topic = 'lunda_stocks';
     $scope.topicChange = function () {
@@ -35,7 +73,7 @@ app.controller('MsgCtrl', ['$scope', 'RestService', function ($scope, RestServic
         enableColumnMenus: false,
         useExternalPagination: true,
         columnDefs: [
-            {field: 'button', name: '', cellTemplate: 'edit-button.html', width: 34},
+            {field: 'button', name: '', cellTemplate: 'edit-button.html', width: 64},
             {name: 'id'},
             {name: 'topic'},
             {name: 'created'},
