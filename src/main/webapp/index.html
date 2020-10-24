@@ -11,8 +11,16 @@
     <script src="view/app.js"></script>
 </head>
 <body>
-<div ng-controller="StudentCtrl as vm">
-     <h3>Топик: {{vm.getTopic()}}. Чтобы сменить топик, перегрузите страницу добавив к url '#название_топика'</h3>
+<div ng-controller="MsgCtrl as vm">
+
+  <!--   <h3>Топик: {{vm.getTopic()}}. Чтобы сменить топик, перегрузите страницу добавив к url '#название_топика'</h3>-->
+     <label for="topicSelect">Топик:</label><select id="topicSelect" ng-model="topic" ng-change="topicChange()">
+         <option value="{{item}}" ng-disabled="item==topic" ng-repeat="item in topics">{{item}}</option>
+
+     </select>
+
+
+
     <div ui-grid="gridOptions" class="grid" ui-grid-pagination></div>
 </div>
 </body>

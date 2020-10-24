@@ -1,25 +1,41 @@
 var app = angular.module('app', ['ui.grid', 'ui.grid.pagination']);
 
-app.controller('StudentCtrl', ['$scope', 'RestService', function ($scope, RestService) {
-    let paginationOptions = {
+app.controller('MsgCtrl', ['$scope', 'RestService', function ($scope, RestService) {
+    $scope.paginationOptions = {
         pageNumber: 1,
         pageSize: 5,
         sort: null
     };
-    this.getTopic = getTopic;
 
-    RestService.getMessages(paginationOptions.pageNumber,
-        paginationOptions.pageSize).success(function (data) {
-        $scope.gridOptions.data = data.content;
-        $scope.gridOptions.totalItems = data.totalElements;
+    $scope.topic = 'lunda_stocks';
+    $scope.topicChange = function () {
+        $scope.reloadMessages();
+    }
+    RestService.getTopics().success(function (data) {
+        $scope.topics = data;
     });
+    $scope.reloadMessages = function () {
+        RestService.getMessages($scope.topic, $scope.paginationOptions.pageNumber,
+            $scope.paginationOptions.pageSize).success(function (data) {
+            $scope.gridOptions.data = data.content;
+            $scope.gridOptions.totalItems = data.totalElements;
+        });
+    }
+    $scope.reloadMessages();
+
+    /*  RestService.getMessages($scope.topic, paginationOptions.pageNumber,
+          paginationOptions.pageSize).success(function (data) {
+          $scope.gridOptions.data = data.content;
+          $scope.gridOptions.totalItems = data.totalElements;
+      });*/
 
     $scope.gridOptions = {
         paginationPageSizes: [5, 10, 20],
-        paginationPageSize: paginationOptions.pageSize,
+        paginationPageSize: $scope.paginationOptions.pageSize,
         enableColumnMenus: false,
         useExternalPagination: true,
         columnDefs: [
+            {field: 'button', name: '', cellTemplate: 'edit-button.html', width: 34},
             {name: 'id'},
             {name: 'topic'},
             {name: 'created'},
@@ -28,26 +44,22 @@ app.controller('StudentCtrl', ['$scope', 'RestService', function ($scope, RestSe
         onRegisterApi: function (gridApi) {
             $scope.gridApi = gridApi;
             gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                paginationOptions.pageNumber = newPage;
-                paginationOptions.pageSize = pageSize;
-                RestService.getMessages(newPage, pageSize).success(function (data) {
-                    $scope.gridOptions.data = data.content;
-                    $scope.gridOptions.totalItems = data.totalElements;
-                });
+                $scope.paginationOptions.pageNumber = newPage;
+                $scope.paginationOptions.pageSize = pageSize;
+                $scope.reloadMessages();
+                /* RestService.getMessages($scope.topic, newPage, pageSize).success(function (data) {
+                     $scope.gridOptions.data = data.content;
+                     $scope.gridOptions.totalItems = data.totalElements;
+                 });*/
             });
         }
     };
 
 }]);
 
-function getTopic() {
-    return window.location.hash ? window.location.hash.substr(1) : 'lunda_stocks'
-}
-
 app.service('RestService', ['$http', function ($http) {
 
-    function getMessages(pageNumber, size) {
-        let topic = getTopic();
+    function getMessages(topic, pageNumber, size) {
         pageNumber = pageNumber > 0 ? pageNumber - 1 : 0;
         return $http({
             method: 'GET',
@@ -55,8 +67,15 @@ app.service('RestService', ['$http', function ($http) {
         });
     }
 
+
     return {
-        getMessages: getMessages
+        getMessages: getMessages,
+        getTopics: function () {
+            return $http({
+                method: 'GET',
+                url: 'api/topics'
+            });
+        }
     };
 
 }]);

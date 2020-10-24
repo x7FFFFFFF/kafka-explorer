@@ -15,6 +15,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Configuration
 @EnableKafka
@@ -35,9 +36,10 @@ public class KafkaConfig {
     public Map<String, Object> consumerConfigs() throws UnknownHostException {
         Map<String, Object> props = new HashMap<>();
         //props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,kafkaServer);
-        props.put("client.id", InetAddress.getLocalHost().getHostName());
-        props.put("group.id", "foo");
-        props.put("bootstrap.servers", kafkaServer);
+        props.put(ConsumerConfig.CLIENT_ID_CONFIG, InetAddress.getLocalHost().getHostName());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "test.consumer." + UUID.randomUUID().toString());
+
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
        /* props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");*/
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // earliest
