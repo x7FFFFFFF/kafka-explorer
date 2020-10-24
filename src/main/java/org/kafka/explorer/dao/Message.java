@@ -1,5 +1,8 @@
 package org.kafka.explorer.dao;
 
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -7,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(indexes = {@Index(name = "IDX_TOPIC", columnList = "topic"),
         @Index(name = "IDX_TIMESTAMP", columnList = "created"),
-       /* @Index(name = "IDX_MESSAGE", columnList = "message")*/
+        /* @Index(name = "IDX_MESSAGE", columnList = "message")*/
 })
 @SequenceGenerator(name = "seq", initialValue = 100)
 public class Message implements Serializable {
@@ -22,6 +25,10 @@ public class Message implements Serializable {
     @Column(nullable = false)
     @Lob
     private String message;
+    @Column(nullable = false)
+    private String key;
+    @Column(nullable = false)
+    private int partition;
 
 
     public long getId() {
@@ -54,5 +61,25 @@ public class Message implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public int getPartition() {
+        return partition;
+    }
+
+    public void setPartition(int partition) {
+        this.partition = partition;
     }
 }

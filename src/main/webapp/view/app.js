@@ -1,10 +1,11 @@
-var app = angular.module('app', ['ui.grid', 'ui.grid.pagination', 'ui.bootstrap']);
+var app = angular.module('app', ['ui.grid', 'ui.grid.pagination', 'ui.bootstrap', 'ngSanitize']);
 
 function RowEditCtrl($scope, $modalInstance, PersonSchema, row) {
 
 
     //vm.schema = PersonSchema;
     $scope.entity = angular.copy(row.entity);
+    $scope.entity.message =  $scope.entity.message.replace(/\n/g, "<br />")
    /* vm.form = [
         'name',
         'company',
@@ -28,12 +29,12 @@ app.controller('MsgCtrl', ['$scope', '$modal', 'RestService', function ($scope, 
         pageSize: 5,
         sort: null
     };
-    var vm = this;
-    vm.editRow = function editRow(grid, row) {
+    //var vm = this;
+    $scope.editRow = function editRow(grid, row) {
         $modal.open({
             templateUrl: 'edit-modal.html',
             controller: ['$scope', '$modalInstance', 'grid', 'row', RowEditCtrl],
-            controllerAs: 'vm',
+            //controllerAs: 'vm',
             resolve: {
                 grid: function () {
                     return grid;

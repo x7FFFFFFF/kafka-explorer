@@ -56,7 +56,7 @@ public class KafkaTopicListener {
         return result;
     }
 
-/*    @KafkaListener(*//*topics = "#{'${kafka.topics}'.split(',')}"*//*topicPartitions = {
+    /*    @KafkaListener(*//*topics = "#{'${kafka.topics}'.split(',')}"*//*topicPartitions = {
             @TopicPartition(topic = "lunda_stocks", partitionOffsets = {@PartitionOffset(partition = "0", initialOffset = "1")})},
             containerFactory = "kafkaListenerContainerFactory")
     public void receive(ConsumerRecord<String, String> consumerRecord,
@@ -67,18 +67,24 @@ public class KafkaTopicListener {
         acknowledgment.acknowledge();
     }*/
 
-   @KafkaListener(topics = "#{'${kafka.topics}'.split(',')}", containerFactory = "kafkaListenerContainerFactory")
-   /*@KafkaListener(*//*topics = "#{'${kafka.topics}'.split(',')}"*//*topicPartitions = {
+    @KafkaListener(topics = "#{'${kafka.topics}'.split(',')}", containerFactory = "kafkaListenerContainerFactory")
+    /*@KafkaListener(*//*topics = "#{'${kafka.topics}'.split(',')}"*//*topicPartitions = {
            @TopicPartition(topic = "lunda_stocks", partitionOffsets = {@PartitionOffset(partition = "0", initialOffset = "1")})},
            containerFactory = "kafkaListenerContainerFactory")*/
     public void listenToPartition(
             @Payload String message,
-            @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long created, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+            @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long created,
+            @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+            @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
+            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition
+    ) {
         final Message result = new Message();
         result.setCreated(LocalDateTime.ofInstant(Instant.ofEpochMilli(created),
                 TimeZone.getDefault().toZoneId()));
         result.setTopic(topic);
         result.setMessage(message);
+        result.setKey(key);
+        result.setPartition(partition);
         messagesRepo.save(result);
     }
 
