@@ -16,7 +16,7 @@
     <script src="view/app.js"></script>
 </head>
 <body>
-<div ng-controller="MsgCtrl as vm">
+<div  class="container" ng-controller="MsgCtrl as vm">
 
   <!--   <h3>Топик: {{vm.getTopic()}}. Чтобы сменить топик, перегрузите страницу добавив к url '#название_топика'</h3>-->
      <label for="topicSelect">Топик:</label><select id="topicSelect" ng-model="topic" ng-change="topicChange()">
